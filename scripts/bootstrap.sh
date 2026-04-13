@@ -62,10 +62,22 @@ echo "╚═══════════════════════�
 # Run from /app so pnpm workspace resolution works correctly.
 cd /app
 
-# Give the server a moment to finish writing its config file after the health
-# check passes — bootstrapCeoInvite requires /paperclip/instances/default/config.json
-# to exist, which is created dynamically during startup.
-sleep 10
+# Wait for the config file to be written — bootstrapCeoInvite requires
+# /paperclip/instances/default/config.json to exist, which is created
+# dynamically during startup. Poll instead of using a fixed sleep.
+CONFIG_FILE="/paperclip/instances/default/config.json"
+config_elapsed=0
+config_max=60
+echo "[bootstrap] Waiting for config file: ${CONFIG_FILE}"
+while [ ! -f "${CONFIG_FILE}" ]; do
+  if [ "${config_elapsed}" -ge "${config_max}" ]; then
+      echo "[bootstrap] ERROR: Config file not found after ${config_max}s. Skipping bootstrap."
+          exit 0
+            fi
+              sleep 2
+                config_elapsed=$((config_elapsed + 2))
+                done
+                echo "[bootstrap] Config file ready after ${config_elapsed}s."
 
 # Capture output; the command prints the invite URL to stdout.
 BOOTSTRAP_OUTPUT="$(pnpm paperclipai auth bootstrap-ceo 2>&1)" || true
