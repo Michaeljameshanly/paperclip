@@ -63,7 +63,7 @@ echo "╚═══════════════════════�
 cd /app
 
 # Capture output; the command prints the invite URL to stdout.
-BOOTSTRAP_OUTPUT="$(pnpm paperclipai auth bootstrap-ceo 2>&1)" || true
+BOOTSTRAP_OUTPUT="$(pnpm paperclipai auth bootstrap-ceo --config /paperclip/instances/default/config.json 2>&1)" || true
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
