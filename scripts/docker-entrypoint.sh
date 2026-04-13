@@ -26,4 +26,12 @@ if [ "$changed" = "1" ]; then
     chown -R node:node /paperclip
 fi
 
+# In authenticated deployment mode, run the bootstrap script in the background
+# after the server starts. It waits for the health endpoint to be ready, then
+# calls `paperclipai auth bootstrap-ceo` and prints the invite URL to the logs.
+# The script is a no-op if an admin already exists.
+if [ "${PAPERCLIP_DEPLOYMENT_MODE:-}" = "authenticated" ]; then
+    gosu node sh -c 'bootstrap.sh' &
+fi
+
 exec gosu node "$@"
