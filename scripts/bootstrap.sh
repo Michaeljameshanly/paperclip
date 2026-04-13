@@ -62,6 +62,11 @@ echo "╚═══════════════════════�
 # Run from /app so pnpm workspace resolution works correctly.
 cd /app
 
+# Give the server a moment to finish writing its config file after the health
+# check passes — bootstrapCeoInvite requires /paperclip/instances/default/config.json
+# to exist, which is created dynamically during startup.
+sleep 3
+
 # Capture output; the command prints the invite URL to stdout.
 BOOTSTRAP_OUTPUT="$(pnpm paperclipai auth bootstrap-ceo 2>&1)" || true
 
