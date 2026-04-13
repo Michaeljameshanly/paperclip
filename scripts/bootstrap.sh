@@ -73,7 +73,7 @@ while true; do
                                   while [ "${attempt}" -lt "${max_attempts}" ]; do
                                     attempt=$((attempt + 1))
                                       echo "[bootstrap] Attempt ${attempt}/${max_attempts}..."
-                                        BOOTSTRAP_OUTPUT="$(pnpm paperclipai auth bootstrap-ceo 2>&1)"
+                                                BOOTSTRAP_OUTPUT="$(node cli/node_modules/tsx/dist/cli.mjs cli/src/index.ts auth bootstrap-ceo 2>&1)"
                                           exit_code=$?
 
                                             if [ "${exit_code}" -eq 0 ] && [ -n "${BOOTSTRAP_OUTPUT}" ]; then
