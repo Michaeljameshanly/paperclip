@@ -65,7 +65,8 @@ cd /app
 # Wait for the config file to be written — bootstrapCeoInvite requires
 # /paperclip/instances/default/config.json to exist, which is created
 # dynamically during startup. Poll instead of using a fixed sleep.
-CONFIG_FILE="/paperclip/instances/default/config.json"
+STORAGE_DIR="${PAPERCLIP_STORAGE_LOCAL_DIR:-/paperclip}"
+CONFIG_FILE="${STORAGE_DIR}/instances/default/config.json"
 config_elapsed=0
 config_max=60
 echo "[bootstrap] Waiting for config file: ${CONFIG_FILE}"
